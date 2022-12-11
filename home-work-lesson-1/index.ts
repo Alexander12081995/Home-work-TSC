@@ -148,14 +148,10 @@ interface Circle { type: 'circle', radius: number }
 interface Square { type: 'square', side: number }
 
 const getArea = (shape: Circle | Square): number => {
-    if (shape.type === 'circle') {
-      const circleArea = Math.PI * Math.pow(shape.radius, 2);
-      return circleArea
-     }else if (shape.type === 'square') {
-      const squareArea = Math.pow(shape.side, 2);
-      return squareArea
+    if ('radius' in shape) {
+      return Math.PI * Math.pow(shape.radius, 2);
      }
-      
+     return Math.pow(shape.side, 2);
   }
 
 // У функции toLowerCase ошибка типизации т.к. value может быть числом, а у числа нету метода toLowerCase. Изменять типизацию функции (параметров или возвращаемого значения) нельзя.
