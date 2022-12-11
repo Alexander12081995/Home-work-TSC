@@ -151,10 +151,10 @@ const getArea = (shape: Circle | Square): number => {
     if (shape.type === 'circle') {
       const circleArea = Math.PI * Math.pow(shape.radius, 2);
       return circleArea
-    }else if (shape.type === 'square') {
+     }else if (shape.type === 'square') {
       const squareArea = Math.pow(shape.side, 2);
       return squareArea
-    }
+     }
       
   }
 
