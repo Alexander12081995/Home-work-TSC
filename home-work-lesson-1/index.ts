@@ -21,7 +21,7 @@ let myTuple: [string, number, {id: number, label: string}] = ["", 2, {id: 3, lab
 
 // переменная с типом объекта ключи которого любая строка, а значения строка или число
 type User = {
-    age: string | number
+    [key in string]: string | number
 }
 let myCollectionOfNumberOrString: User = {age: 27};
 
@@ -43,22 +43,22 @@ interface User2 {
 };
 
 // "Наследуясь" от предыдущих типов User1 и User2 создать новые аналогичные тип и интерфейс у которых помимо id и name будет еще свойство isAdmin с типом true
-type Admin1 = {isAdmin: boolean} & User1;
+type Admin1 = {isAdmin: true} & User1;
 
 interface Admin2 extends User2 {
-    isAdmin: boolean
+    isAdmin: true
 };
 
 // Создать аналогичные друг другу интерфейс и тип: объект с обязательным неизменяемым свойством id типа число, обязательным полем name типа строка и опциональным полем gender с типом либо 'male' либо 'female'
 type Guest1 = {
    readonly id: number,
    name: string,
-   gender: "male" | "female",
+   gender?: "male" | "female",
 };
 interface Guest2 {
     readonly id: number
    name: string
-   gender: "male" | "female"
+   gender?: "male" | "female"
 };
 
 // Затипизировать входящие параметры "x" и "y" как числа и возвращаемое значение
@@ -92,7 +92,7 @@ function getName(this: {[id: string]: {name: string}},id: string) {
 }
 
 // Затипизировать возвращаемое значение
-const sayHi = (name: string) => {
+const sayHi = (name: string): void => {
   console.log(`hi ${name}`);
 }
 
@@ -148,22 +148,16 @@ interface Circle { type: 'circle', radius: number }
 interface Square { type: 'square', side: number }
 
 const getArea = (shape: Circle | Square): number => {
-    if (shape.type === 'circle') {
-      const circleArea = Math.PI * Math.pow(shape.radius, 2);
-      return circleArea
-    }else if (shape.type === 'square') {
-      const squareArea = Math.pow(shape.side, 2);
-      return squareArea
-    }
-      
+    if ('radius' in shape) {
+      return Math.PI * Math.pow(shape.radius, 2);
+     }
+     return Math.pow(shape.side, 2);
   }
 
 // У функции toLowerCase ошибка типизации т.к. value может быть числом, а у числа нету метода toLowerCase. Изменять типизацию функции (параметров или возвращаемого значения) нельзя.
 // Нужно решать проблему любыми двумя способами.
 const toLowerCase1 = (value: string | number): number | string => {
-  if (typeof value === 'number') {
-    return value
-  } else {return value.toLowerCase();}
+  return String(value)
     
 }
 
